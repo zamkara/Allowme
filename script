@@ -13,7 +13,7 @@ if ! command -v tccplus &> /dev/null; then
   sudo curl -L -o /usr/local/bin/tccplus https://github.com/zamkara/Allowme/raw/main/tccplus
   sudo chmod +x /usr/local/bin/tccplus
 else
-  echo "Package 'tccplus' is already installed."
+  echo "set app permissions..."
 fi
 if [[ -z "$1" ]]; then
   echo "Enter the folder path to execute:"
