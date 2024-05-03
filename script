@@ -1,0 +1,40 @@
+#!/bin/bash
+usage() {
+  echo "Usage: allowme [path_to_app]"
+  echo "Grant permissions to the specified app."
+  echo "If no path is provided, you will be prompted to enter the app path."
+}
+if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
+  usage
+  exit 0
+fi
+if ! command -v tccplus &> /dev/null; then
+  echo "Package 'tccplus' is not found. Downloading and installing..."
+  sudo curl -L -o /usr/local/bin/tccplus https://github.com/zamkara/Allowme/raw/main/tccplus
+  sudo chmod +x /usr/local/bin/tccplus
+else
+  echo "Package 'tccplus' is already installed."
+fi
+if [[ -z "$1" ]]; then
+  echo "Enter the folder path to execute:"
+  read -r folder_path
+else
+  folder_path="$1"
+fi
+folder_path="${folder_path//\\/}"
+cd "$folder_path" || { echo "Failed to enter the folder: $folder_path"; exit 1; }
+cd Contents || { echo "Failed to enter the Contents folder"; exit 1; }
+output=$(grep -A 1 '<key>CFBundleIdentifier</key>' Info.plist | grep -o '<string>.*</string>')
+# <!-- What do you think you're doing here? -->
+# <!-- emFta2FyYQ=={th15_15_n0t_4_fl4g} -->
+if [[ -z "$output" ]]; then
+  echo "Failed to find the bundle identifier in Info.plist"
+  exit 1
+fi
+value=$(echo "$output" | sed -E 's/<\/?string>//g')
+if [[ -n "$value" ]]; then
+  sudo tccplus add All "$value"
+else
+  echo "Failed to extract the bundle identifier value"
+  exit 1
+fi
