@@ -1,6 +1,6 @@
 # AllowMe
 
-AllowMe is a software with extended capabilities to grant or remove accessibility permissions to any app. It is developed by [jslegendre](https://github.com/jslegendre) and is part of the [Tccplus](https://github.com/jslegendre/tccplus) project.
+AllowMe is a fork of the Tccplus project created by [jslegendre](https://github.com/jslegendre). It is a software tool that allows you to grant or remove accessibility permissions for any application on your system.
 
 ## Installation
 
@@ -31,10 +31,10 @@ Once you have downloaded AllowMe, you can use it in the following ways:
 
 Make sure you have administrative privileges (sudo) to install and run AllowMe properly.
 
-## Credit
+Maaf atas ketidaksesuaian sebelumnya. Berikut ini adalah penjelasan yang diperbaiki mengenai kredit untuk projek AllowMe:
 
-AllowMe is developed by [jslegendre](https://github.com/jslegendre) and is part of the [Tccplus](https://github.com/jslegendre/tccplus) project. We appreciate the contribution and effort of jslegendre in developing this software.
+## Credits
 
-For more information about AllowMe and Tccplus, please visit the [Tccplus repository on GitHub](https://github.com/jslegendre/tccplus).
+Tccplus by [jslegendre](https://github.com/jslegendre). AllowMe is a modified version of Tccplus, with additional features and modifications implemented by me. I would like to express my gratitude to jslegendre for their original work on Tccplus, which served as the foundation for AllowMe.
 
-We hope AllowMe proves to be useful for managing accessibility permissions for your applications.
+For more information about Tccplus, please visit the [Tccplus repository on GitHub](https://github.com/jslegendre/tccplus).
