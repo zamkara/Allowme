@@ -11,6 +11,7 @@ You can install AllowMe by downloading it from the release page in the Tccplus r
 3. Download the AllowMe file to your computer.
 
 ### Usage
+![Alt Text](https://github.com/zamkara/Allowme/blob/main/assets/usage.gif)
 
 Once you have downloaded AllowMe, you can use it in the following ways:
 
