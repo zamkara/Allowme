@@ -1,40 +1,103 @@
 #!/bin/bash
-usage() {
-  echo "Usage: allowme [path_to_app]"
-  echo "Grant permissions to the specified app."
-  echo "If no path is provided, you will be prompted to enter the app path."
-}
-if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
-  usage
-  exit 0
-fi
+
+# Check if the tccplus package is already installed
 if ! command -v tccplus &> /dev/null; then
-  echo "Package 'tccplus' is not found. Downloading and installing..."
-  sudo curl -L -o /usr/local/bin/tccplus https://github.com/zamkara/Allowme/raw/main/tccplus
-  sudo chmod +x /usr/local/bin/tccplus
-else
-  echo "set app permissions..."
+    echo "tccplus package not found. Downloading..."
+
+    # Download the tccplus file from GitHub
+    curl -L -o tccplus https://github.com/zamkara/Allowme/raw/main/tccplus
+
+    # Move the tccplus file to /usr/local/bin/ with sudo access
+    sudo mv tccplus /usr/local/bin/
+
+    # Change the permission of the tccplus file to executable
+    sudo chmod +x /usr/local/bin/tccplus
+
+    echo "tccplus package downloaded and installed successfully."
 fi
-if [[ -z "$1" ]]; then
-  echo "Enter the folder path to execute:"
-  read -r folder_path
-else
-  folder_path="$1"
+
+# Check if the command is 'flag'
+if [ "$1" == "flag" ]; then
+    echo "emFta2FyYQ=={th15_15_n0t_4_fl4g}"
+    exit 0
 fi
-folder_path="${folder_path//\\/}"
-cd "$folder_path" || { echo "Failed to enter the folder: $folder_path"; exit 1; }
-cd Contents || { echo "Failed to enter the Contents folder"; exit 1; }
-output=$(grep -A 1 '<key>CFBundleIdentifier</key>' Info.plist | grep -o '<string>.*</string>')
-# <!-- What do you think you're doing here? -->
-# <!-- emFta2FyYQ=={th15_15_n0t_4_fl4g} -->
-if [[ -z "$output" ]]; then
-  echo "Failed to find the bundle identifier in Info.plist"
-  exit 1
+
+# Check the number of arguments provided
+if [ $# -lt 3 ] || [ "$1" == "-h" ]; then
+    echo "Usage: allowme [add/reset] [permission] [application_path]"
+    echo "permission:"
+    echo " - All"
+    echo " - Accessibility"
+    echo " - AddressBook"
+    echo " - AppleEvents"
+    echo " - Calendar"
+    echo " - Camera"
+    echo " - ContactsFull"
+    echo " - ContactsLimited"
+    echo " - DeveloperTool"
+    echo " - Facebook"
+    echo " - LinkedIn"
+    echo " - ListenEvent"
+    echo " - Liverpool"
+    echo " - Location"
+    echo " - MediaLibrary"
+    echo " - Microphone"
+    echo " - Motion"
+    echo " - Photos"
+    echo " - PhotosAdd"
+    echo " - PostEvent"
+    echo " - Reminders"
+    echo " - ScreenCapture"
+    echo " - ShareKit"
+    echo " - SinaWeibo"
+    echo " - Siri"
+    echo " - SpeechRecognition"
+    echo " - SystemPolicyAllFiles"
+    echo " - SystemPolicyDesktopFolder"
+    echo " - SystemPolicyDeveloperFiles"
+    echo " - SystemPolicyDocumentsFolder"
+    echo " - SystemPolicyDownloadsFolder"
+    echo " - SystemPolicyNetworkVolumes"
+    echo " - SystemPolicyRemovableVolumes"
+    echo " - SystemPolicySysAdminFiles"
+    echo " - TencentWeibo"
+    echo " - Twitter"
+    echo " - Ubiquity"
+    echo " - Willow"
+    exit 1
 fi
-value=$(echo "$output" | sed -E 's/<\/?string>//g')
-if [[ -n "$value" ]]; then
-  sudo tccplus add All "$value"
+
+# Get the options from the provided arguments
+command=$1
+permission=$2
+app_directory=$3
+
+# Check for valid options
+if [ "$command" != "add" ] && [ "$command" != "reset" ]; then
+    echo "Usage: allowme [add/reset] [permission] [application_path]"
+    exit 1
+fi
+
+# Check if the application directory exists
+if [ -d "$app_directory" ]; then
+    # Get the CFBundleIdentifier value from Info.plist
+    bundle_identifier=$(defaults read "$app_directory/Contents/Info.plist" CFBundleIdentifier)
+
+    # Check if CFBundleIdentifier is found
+    if [ -z "$bundle_identifier" ]; then
+        echo "CFBundleIdentifier not found"
+        exit 1
+    fi
+
+    # Form the command with the provided permission option
+    if [ "$command" == "reset" ]; then
+        command="sudo tccplus reset $permission $bundle_identifier"
+    else
+        command="sudo tccplus add $permission $bundle_identifier"
+    fi
+
+    # Run the command
+    eval "$command"
 else
-  echo "Failed to extract the bundle identifier value"
-  exit 1
+    echo "Application directory not found"
 fi
